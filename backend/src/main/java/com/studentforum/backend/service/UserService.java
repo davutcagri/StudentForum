@@ -5,6 +5,7 @@ import com.studentforum.backend.dto.UserRegister;
 import com.studentforum.backend.dto.UserResponse;
 import com.studentforum.backend.model.User;
 import com.studentforum.backend.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+@Slf4j
 @Service
 public class UserService {
 
@@ -41,6 +43,7 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(userRegister.getPassword());
         user.setPassword(encodedPassword);
         userRepository.save(user);
+        log.info("User saved with id {}", user.getId());
         return ResponseEntity.ok().body(Map.of("message", "User registered successfully"));
     }
 
@@ -51,6 +54,7 @@ public class UserService {
 
         if (authentication.isAuthenticated()) {
             String token = jwtService.generateToken(userLogin.getUsername());
+            log.info("Authentication successful for user {}", userLogin.getUsername());
             ResponseCookie cookie = ResponseCookie.from("token", token)
                     .httpOnly(true)
                     .secure(true)

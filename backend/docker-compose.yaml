@@ -2,7 +2,7 @@ name: StudentForum
 services:
   postgres:
     image: postgres
-    container_name: postgres-db
+    container_name: studentforum
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
@@ -12,7 +12,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4:latest
-    container_name: pgadmin
+    container_name: pgadmin-studentforum
     depends_on:
       - postgres
     ports:

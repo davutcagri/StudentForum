@@ -1,4 +1,4 @@
-package com.studentforum.backend.configuration;
+package com.studentforum.backend.exception;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
