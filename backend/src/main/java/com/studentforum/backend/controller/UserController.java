@@ -4,6 +4,7 @@ import com.studentforum.backend.dto.UserLogin;
 import com.studentforum.backend.dto.UserRegister;
 import com.studentforum.backend.model.User;
 import com.studentforum.backend.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,6 +33,16 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(@AuthenticationPrincipal User user) {
         return userService.getCurrentUser(user);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        return userService.logout(response);
     }
 
 }

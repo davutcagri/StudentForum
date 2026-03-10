@@ -7,6 +7,8 @@ import com.studentforum.backend.model.User;
 import com.studentforum.backend.repository.PostRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +34,7 @@ public class PostService {
     }
 
     public Page<PostResponse> getAll(Pageable page) {
-        Page<Post> posts = postRepository.findAll(page);
+        Page<Post> posts = postRepository.findAll(PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("id").descending()));
         return posts.map(PostResponse::new);
     }
 
