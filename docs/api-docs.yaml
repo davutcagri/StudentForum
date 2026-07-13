@@ -1,0 +1,490 @@
+openapi: 3.1.0
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Search
+  description: Search API
+- name: User
+  description: User API
+- name: Post
+  description: Post API
+- name: Comment
+  description: Comment API
+paths:
+  /api/user/save:
+    post:
+      tags:
+      - User
+      summary: Save user
+      operationId: save
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreateRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/user/logout:
+    post:
+      tags:
+      - User
+      summary: Logout user
+      operationId: logout
+      responses:
+        "200":
+          description: OK
+  /api/user/auth:
+    post:
+      tags:
+      - User
+      summary: Authenticate user
+      operationId: auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAuthRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/post/save:
+    post:
+      tags:
+      - Post
+      summary: Save post
+      operationId: save_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostCreateRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/comment/save:
+    post:
+      tags:
+      - Comment
+      summary: Save comment
+      operationId: save_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentCreateRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/user/update/me:
+    patch:
+      tags:
+      - User
+      summary: Update current user
+      operationId: updateCurrentUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+  /api/user/{username}:
+    get:
+      tags:
+      - User
+      summary: Get user by username
+      operationId: getUserByUsername
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+  /api/user/me:
+    get:
+      tags:
+      - User
+      summary: Get current user
+      operationId: getCurrentUser
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+  /api/user/getAll:
+    get:
+      tags:
+      - User
+      summary: Get all users
+      operationId: getAllUsers
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserSummaryResponse"
+  /api/search/users:
+    get:
+      tags:
+      - Search
+      summary: Search users
+      operationId: searchUsers
+      parameters:
+      - name: text
+        in: query
+        required: true
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 0
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PagedModel"
+  /api/post/getAll:
+    get:
+      tags:
+      - Post
+      summary: Get all posts
+      operationId: getAll
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PagedModel"
+  /api/post/getAll/{username}:
+    get:
+      tags:
+      - Post
+      summary: Get all posts by username
+      operationId: getAllPostsByUsername
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PagedModel"
+  /api/post/get/{id}:
+    get:
+      tags:
+      - Post
+      summary: Get post details with id
+      operationId: getById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PostResponse"
+  /api/comment/getAll/{postId}:
+    get:
+      tags:
+      - Comment
+      summary: Get all comments by post id
+      operationId: getAllCommentsByPostId
+      parameters:
+      - name: postId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PagedModel"
+  /api/user/delete/me:
+    delete:
+      tags:
+      - User
+      summary: Delete current user
+      operationId: deleteCurrentUser
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/post/delete/{id}:
+    delete:
+      tags:
+      - Post
+      summary: Delete post by id
+      operationId: delete
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/comment/delete/{id}:
+    delete:
+      tags:
+      - Comment
+      summary: Delete comment
+      operationId: delete_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+components:
+  schemas:
+    UserCreateRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        username:
+          type: string
+          maxLength: 20
+          minLength: 3
+          pattern: "^[a-zA-Z0-9]+$"
+        password:
+          type: string
+          maxLength: 64
+          minLength: 6
+          pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$"
+        major:
+          type: string
+      required:
+      - email
+      - major
+      - password
+      - username
+    UserAuthRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+      - password
+      - username
+    PostCreateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 100
+          minLength: 0
+        content:
+          type: string
+          maxLength: 5000
+          minLength: 0
+      required:
+      - content
+      - title
+    CommentCreateRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          maxLength: 1000
+          minLength: 3
+        postId:
+          type: integer
+          format: int64
+      required:
+      - content
+      - postId
+    UserUpdateRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        username:
+          type: string
+          maxLength: 20
+          minLength: 3
+          pattern: "^[a-zA-Z0-9]+$"
+        major:
+          type: string
+    PostSummaryResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        content:
+          type: string
+    UserResponse:
+      type: object
+      properties:
+        username:
+          type: string
+        major:
+          type: string
+        posts:
+          type: array
+          items:
+            $ref: "#/components/schemas/PostSummaryResponse"
+    UserSummaryResponse:
+      type: object
+      properties:
+        username:
+          type: string
+        major:
+          type: string
+    Pageable:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+          minimum: 0
+        size:
+          type: integer
+          format: int32
+          minimum: 1
+        sort:
+          type: array
+          items:
+            type: string
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    PagedModel:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            type: object
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    PostResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        content:
+          type: string
+        author:
+          $ref: "#/components/schemas/UserSummaryResponse"
+        commentCount:
+          type: integer
+          format: int64
