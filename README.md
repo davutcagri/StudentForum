@@ -10,9 +10,11 @@ The project includes JWT authentication, user profiles, posts and comments, pagi
 
 **Backend:** Java 17, Spring Boot, Spring Security, Spring Data JPA, Elasticsearch, JWT
 
-**Frontend:** React, Vite, Zustand, Axios, Tailwind CSS
+**Frontend:** React, Vite, Zustand, Axios, Tailwind CSS 
 
 **Other:** Docker Compose, Swagger/OpenAPI, H2
+
+The frontend implementation was developed with Claude Code. My main focus in this project was the backend.
 
 ## Running
 
