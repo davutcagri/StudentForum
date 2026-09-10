@@ -13,6 +13,3 @@
 
 # General logs
 *.log
-
-#Frontend
-frontend/** linguist-vendored
