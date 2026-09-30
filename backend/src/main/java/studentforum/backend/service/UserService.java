@@ -1,7 +1,6 @@
 package studentforum.backend.service;
 
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -69,7 +68,7 @@ public class UserService {
         userSearchService.delete(user.getId());
     }
 
-    public ResponseCookie auth(UserAuthRequest userAuthRequest) {
+    public String auth(UserAuthRequest userAuthRequest) {
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userAuthRequest.getUsername(), userAuthRequest.getPassword()));
 
         User user = (User) auth.getPrincipal();
@@ -119,9 +118,4 @@ public class UserService {
 
         return new UserResponse(user);
     }
-
-    public ResponseCookie logout() {
-        return jwtService.deleteToken();
-    }
-
 }

@@ -21,8 +21,8 @@ export default function Signup() {
     setLoading(true)
     try {
       await registerApi(email, username, password, major)
-      await loginApi(username, password)
-      login(username)
+      const res = await loginApi(username, password)
+      login(username, res.data)
       navigate('/')
     } catch (err) {
       setError(extractApiError(err))

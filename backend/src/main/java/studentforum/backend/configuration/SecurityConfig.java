@@ -65,7 +65,7 @@ public class SecurityConfig {
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:5173");
-        config.setAllowedHeaders(Arrays.asList("Content-Type"));
+        config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
         config.setAllowedMethods(Arrays.asList("POST", "GET", "PATCH", "DELETE", "OPTIONS"));
 
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

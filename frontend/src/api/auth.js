@@ -6,9 +6,6 @@ export const loginApi = (username, password) =>
 export const registerApi = (email, username, password, major) =>
   client.post('/api/user/save', { email, username, password, major })
 
-export const logoutApi = () =>
-  client.post('/api/user/logout')
-
 export const getMeApi = () =>
   client.get('/api/user/me')
 

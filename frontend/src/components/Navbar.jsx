@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Search, Bell, LogOut, User } from 'lucide-react'
 import { useAuthStore } from '../store/authStore'
-import { logoutApi } from '../api/auth'
 import { searchUsersApi } from '../api/search'
 import { getAvatarColor, getInitials } from '../utils/avatar'
 
@@ -46,8 +45,7 @@ export function Navbar() {
     return () => clearTimeout(t)
   }, [query])
 
-  const handleLogout = async () => {
-    await logoutApi()
+  const handleLogout = () => {
     logout()
     navigate('/login')
   }

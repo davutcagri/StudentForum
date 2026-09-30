@@ -17,8 +17,8 @@ export default function Login() {
     setError('')
     setLoading(true)
     try {
-      await loginApi(username, password)
-      login(username)
+      const res = await loginApi(username, password)
+      login(username, res.data)
       navigate('/')
     } catch (err) {
       setError(extractApiError(err))

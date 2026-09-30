@@ -3,9 +3,7 @@ package studentforum.backend.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -43,10 +41,9 @@ public class UserController {
     @PostMapping("/auth")
     @Operation(summary = "Authenticate user")
     public ResponseEntity<String> auth(@RequestBody @Valid UserAuthRequest userAuthRequest) {
-        ResponseCookie cookie = userService.auth(userAuthRequest);
+        String token = userService.auth(userAuthRequest);
         return ResponseEntity.status(HttpStatus.OK)
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body("Authenticated successfully");
+                .body(token);
     }
 
     @GetMapping("/getAll")
@@ -76,10 +73,7 @@ public class UserController {
     @PostMapping("/logout")
     @Operation(summary = "Logout user")
     public ResponseEntity<Void> logout() {
-        ResponseCookie cookie = userService.logout();
-        return ResponseEntity.noContent()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .build();
+        return ResponseEntity.noContent().build();
     }
 
 }
