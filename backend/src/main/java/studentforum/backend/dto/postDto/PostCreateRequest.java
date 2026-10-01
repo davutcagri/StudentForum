@@ -17,5 +17,5 @@ public class PostCreateRequest {
     private String content;
 
     @NotBlank(message = "Category ID cannot be empty")
-    private Long categoryId;
+    private String categoryId;
 }

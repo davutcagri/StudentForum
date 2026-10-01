@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ChevronUp, MessageSquare, Trash2 } from 'lucide-react'
 import { getAvatarColor, getInitials } from '../utils/avatar'
-import { CATEGORY_TAG_COLORS } from '../constants/categories'
+import { getCategoryColor } from '../constants/categories'
 import { useAuthStore } from '../store/authStore'
 import { deletePostApi } from '../api/post'
 import { saveCommentApi, getCommentsByPostIdApi, deleteCommentApi } from '../api/comment'
@@ -154,7 +154,7 @@ export function PostCard({ post, onDelete }) {
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {category && (
-            <span className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${CATEGORY_TAG_COLORS[category] || 'bg-gray-100 text-gray-600'}`}>
+            <span className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${getCategoryColor(category).tagColor}`}>
               {category}
             </span>
           )}

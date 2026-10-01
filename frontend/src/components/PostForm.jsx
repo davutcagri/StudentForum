@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuthStore } from '../store/authStore'
+import { useCategoryStore } from '../store/categoryStore'
 import { getAvatarColor, getInitials } from '../utils/avatar'
 import { savePostApi } from '../api/post'
 import { extractApiError } from '../utils/apiError'
@@ -7,19 +8,24 @@ import { extractApiError } from '../utils/apiError'
 export function PostForm({ onPost }) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [categoryId, setCategoryId] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const username = useAuthStore(s => s.username)
+  const { categories, fetch } = useCategoryStore()
+
+  useEffect(() => { fetch() }, [fetch])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!title.trim()) return
+    if (!title.trim() || !categoryId) return
     setError('')
     setLoading(true)
     try {
-      await savePostApi(title.trim(), content.trim())
+      await savePostApi(title.trim(), content.trim(), categoryId)
       setTitle('')
       setContent('')
+      setCategoryId('')
       onPost?.()
     } catch (err) {
       setError(extractApiError(err))
@@ -50,10 +56,21 @@ export function PostForm({ onPost }) {
             className="w-full text-sm text-gray-700 placeholder-gray-400 resize-none focus:outline-none leading-relaxed"
           />
           {error && <p className="text-xs text-red-500">{error}</p>}
-          <div className="flex justify-end pt-1">
+          <div className="flex items-center justify-between gap-3 pt-1">
+            <select
+              value={categoryId}
+              onChange={e => setCategoryId(e.target.value)}
+              required
+              className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors bg-white text-gray-600"
+            >
+              <option value="" disabled>Select category</option>
+              {categories.map(cat => (
+                <option key={cat.id} value={cat.id}>{cat.name}</option>
+              ))}
+            </select>
             <button
               type="submit"
-              disabled={!title.trim() || loading}
+              disabled={!title.trim() || !categoryId || loading}
               className="bg-primary text-white px-5 py-1.5 rounded-full text-sm font-medium hover:bg-primary-dark transition-colors disabled:opacity-40"
             >
               {loading ? 'Posting...' : 'Post'}

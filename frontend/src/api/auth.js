@@ -9,6 +9,9 @@ export const registerApi = (email, username, password, major) =>
 export const getMeApi = () =>
   client.get('/api/user/me')
 
+export const getAllUsersApi = () =>
+  client.get('/api/user/getAll')
+
 export const getUserByUsernameApi = (username) =>
   client.get(`/api/user/${username}`)
 
