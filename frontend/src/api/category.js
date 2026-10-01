@@ -1,3 +1,3 @@
 import client from './client'
 
-export const getCategoriesApi = () => client.get('/category/getAll')
+export const getCategoriesApi = () => client.get('/api/category/getAll')

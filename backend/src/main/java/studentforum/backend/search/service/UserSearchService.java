@@ -1,25 +1,27 @@
 package studentforum.backend.search.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import studentforum.backend.model.User;
-import studentforum.backend.search.document.UserDocument;
+import studentforum.backend.search.model.UserDocument;
 import studentforum.backend.search.repository.UserSearchRepository;
+import studentforum.backend.user.model.User;
+import studentforum.backend.user.repository.UserRepository;
+
+import java.util.Locale;
 
 @Service
+@RequiredArgsConstructor
 public class UserSearchService {
 
     private final UserSearchRepository userSearchRepository;
 
-    public UserSearchService(UserSearchRepository userSearchRepository) {
-        this.userSearchRepository = userSearchRepository;
-    }
-
     public void index(User user) {
-        UserDocument userDocument = new UserDocument();
-        userDocument.setId(user.getId());
-        userDocument.setUsername(user.getUsername().toLowerCase());
+        UserDocument userDocument = UserDocument.builder()
+                .id(user.getId())
+                .username(user.getUsername().toLowerCase())
+                .build();
 
         userSearchRepository.save(userDocument);
     }

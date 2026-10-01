@@ -17,10 +17,10 @@ export default function Home() {
   const fetchPosts = useCallback(async (pageNum = 0, append = false) => {
     try {
       const res = await getAllPostsApi(pageNum)
-      const { content, page } = res.data
+      const { content, number, totalPages } = res.data
       setPosts(prev => append ? [...prev, ...content] : content)
-      setHasMore(page.number < page.totalPages - 1)
-      setPage(page.number)
+      setHasMore(number < totalPages - 1)
+      setPage(number)
     } catch {
       // keep existing posts on error
     } finally {

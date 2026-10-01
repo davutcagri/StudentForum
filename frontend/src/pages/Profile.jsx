@@ -46,10 +46,10 @@ export default function Profile() {
     setPostsLoading(true)
     try {
       const res = await getPostsByUsernameApi(paramUsername, pageNum)
-      const { content, page } = res.data
+      const { content, number, totalPages } = res.data
       setPosts(prev => append ? [...prev, ...content] : content)
-      setHasMore(page.number < page.totalPages - 1)
-      setPostsPage(page.number)
+      setHasMore(number < totalPages - 1)
+      setPostsPage(number)
     } finally {
       setPostsLoading(false)
     }

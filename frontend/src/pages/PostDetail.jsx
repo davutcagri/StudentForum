@@ -36,10 +36,10 @@ export default function PostDetail() {
     setCommentsLoading(true)
     try {
       const res = await getCommentsByPostIdApi(id, pageNum)
-      const { content, page: meta } = res.data
+      const { content, number, totalPages } = res.data
       setComments(prev => append ? [...prev, ...content] : content)
-      setHasMore(meta.number < meta.totalPages - 1)
-      setPage(meta.number)
+      setHasMore(number < totalPages - 1)
+      setPage(number)
     } finally {
       setCommentsLoading(false)
     }

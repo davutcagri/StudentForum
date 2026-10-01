@@ -1,6 +1,7 @@
 package studentforum.backend.configuration;
 
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,21 +21,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import studentforum.backend.service.CustomUserDetailsService;
+import studentforum.backend.auth.service.CustomUserDetailsService;
 
 import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final CustomUserDetailsService userService;
-
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter, CustomUserDetailsService userService) {
-        this.jwtAuthFilter = jwtAuthFilter;
-        this.userService = userService;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -46,7 +43,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/user/save", "/api/user/auth").permitAll()
+                        .requestMatchers("/api/user/save", "/api/auth").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/sw-api/**", "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated()

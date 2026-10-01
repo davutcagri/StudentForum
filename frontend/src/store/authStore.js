@@ -4,7 +4,7 @@ export const useAuthStore = create((set) => ({
   username: null,
   initializing: true,
   login: (username, token) => {
-    localStorage.setItem('AUTH-TOKEN', token)
+    if (token) localStorage.setItem('AUTH-TOKEN', token)
     set({ username })
   },
   logout: () => {
