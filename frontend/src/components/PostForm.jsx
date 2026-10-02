@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useAuthStore } from '../store/authStore'
 import { useCategoryStore } from '../store/categoryStore'
 import { getAvatarColor, getInitials } from '../utils/avatar'
-import { savePostApi } from '../api/post'
+import { createPostApi } from '../api/post'
 import { extractApiError } from '../utils/apiError'
 
 export function PostForm({ onPost }) {
@@ -12,9 +12,9 @@ export function PostForm({ onPost }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const username = useAuthStore(s => s.username)
-  const { categories, fetch } = useCategoryStore()
+  const { categories, load } = useCategoryStore()
 
-  useEffect(() => { fetch() }, [fetch])
+  useEffect(() => { load() }, [load])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -22,7 +22,7 @@ export function PostForm({ onPost }) {
     setError('')
     setLoading(true)
     try {
-      await savePostApi(title.trim(), content.trim(), categoryId)
+      await createPostApi(title.trim(), content.trim(), categoryId)
       setTitle('')
       setContent('')
       setCategoryId('')

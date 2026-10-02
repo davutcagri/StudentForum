@@ -1,6 +1,6 @@
 import client from './client'
 
-export const savePostApi = (title, content, categoryId) =>
+export const createPostApi = (title, content, categoryId) =>
   client.post('/api/post/save', { title, content, categoryId })
 
 export const getAllPostsApi = (page = 0, size = 10) =>

@@ -3,9 +3,9 @@ import { useCategoryStore } from '../store/categoryStore'
 import { getCategoryColor } from '../constants/categories'
 
 export function CategorySidebar({ selected, onSelect }) {
-  const { categories, fetch } = useCategoryStore()
+  const { categories, load } = useCategoryStore()
 
-  useEffect(() => { fetch() }, [fetch])
+  useEffect(() => { load() }, [load])
 
   const items = [{ id: 'all', name: 'All' }, ...categories]
 

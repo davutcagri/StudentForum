@@ -1,17 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getAvatarColor, getInitials } from '../utils/avatar'
-import { getAllUsersApi } from '../api/auth'
+import { useUserStore } from '../store/userStore'
 
-export function OnlineNow() {
-  const [users, setUsers] = useState([])
+export function UserSidebar() {
+  const { users, load } = useUserStore()
   const navigate = useNavigate()
 
-  useEffect(() => {
-    getAllUsersApi()
-      .then(res => setUsers(res.data))
-      .catch(() => {})
-  }, [])
+  useEffect(() => { load() }, [load])
 
   return (
     <aside className="hidden lg:block w-48 shrink-0">

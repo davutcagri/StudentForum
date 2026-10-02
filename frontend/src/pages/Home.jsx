@@ -1,42 +1,16 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { Navbar } from '../components/Navbar'
 import { CategorySidebar } from '../components/CategorySidebar'
 import { PostCard } from '../components/PostCard'
 import { PostForm } from '../components/PostForm'
-import { OnlineNow } from '../components/OnlineNow'
-import { getAllPostsApi } from '../api/post'
+import { UserSidebar } from '../components/UserSidebar'
+import { usePostStore } from '../store/postStore'
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('All')
-  const [posts, setPosts] = useState([])
-  const [page, setPage] = useState(0)
-  const [hasMore, setHasMore] = useState(false)
-  const [loading, setLoading] = useState(true)
-  const [loadingMore, setLoadingMore] = useState(false)
+  const { posts, page, hasMore, loading, loadingMore, load, removePost } = usePostStore()
 
-  const fetchPosts = useCallback(async (pageNum = 0, append = false) => {
-    try {
-      const res = await getAllPostsApi(pageNum)
-      const { content, number, totalPages } = res.data
-      setPosts(prev => append ? [...prev, ...content] : content)
-      setHasMore(number < totalPages - 1)
-      setPage(number)
-    } catch {
-      // keep existing posts on error
-    } finally {
-      setLoading(false)
-      setLoadingMore(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    fetchPosts(0)
-  }, [fetchPosts])
-
-  const handleLoadMore = () => {
-    setLoadingMore(true)
-    fetchPosts(page + 1, true)
-  }
+  useEffect(() => { load(0) }, [])
 
   const filteredPosts = selectedCategory === 'All'
     ? posts
@@ -48,7 +22,7 @@ export default function Home() {
       <div className="max-w-6xl mx-auto px-4 py-6 flex gap-6">
         <CategorySidebar selected={selectedCategory} onSelect={setSelectedCategory} />
         <main className="flex-1 min-w-0 space-y-4">
-          <PostForm onPost={() => fetchPosts(0)} />
+          <PostForm onPost={() => load(0)} />
           {loading ? (
             <div className="text-center py-10 text-gray-400 text-sm">Loading posts...</div>
           ) : filteredPosts.length === 0 ? (
@@ -61,12 +35,12 @@ export default function Home() {
                 <PostCard
                   key={post.id}
                   post={post}
-                  onDelete={id => setPosts(prev => prev.filter(p => p.id !== id))}
+                  onDelete={removePost}
                 />
               ))}
               {hasMore && (
                 <button
-                  onClick={handleLoadMore}
+                  onClick={() => load(page + 1, true)}
                   disabled={loadingMore}
                   className="w-full py-2.5 text-sm text-gray-500 hover:text-gray-700 border border-gray-200 rounded-xl bg-white transition-colors disabled:opacity-50"
                 >
@@ -76,7 +50,7 @@ export default function Home() {
             </>
           )}
         </main>
-        <OnlineNow />
+        <UserSidebar />
       </div>
     </div>
   )

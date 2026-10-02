@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ChevronLeft, Trash2 } from 'lucide-react'
 import { getPostByIdApi, deletePostApi } from '../api/post'
-import { saveCommentApi, getCommentsByPostIdApi, deleteCommentApi } from '../api/comment'
+import { createCommentApi, getCommentsByPostIdApi, deleteCommentApi } from '../api/comment'
 import { useAuthStore } from '../store/authStore'
 import { getAvatarColor, getInitials } from '../utils/avatar'
 import { extractApiError } from '../utils/apiError'
@@ -51,7 +51,7 @@ export default function PostDetail() {
     setCommentError('')
     setSubmitting(true)
     try {
-      await saveCommentApi(commentText.trim(), Number(id))
+      await createCommentApi(commentText.trim(), Number(id))
       setCommentText('')
       loadComments(0)
       setPost(prev => prev ? { ...prev, commentCount: (prev.commentCount || 0) + 1 } : prev)
@@ -133,7 +133,7 @@ export default function PostDetail() {
 
         <div className="bg-white rounded-xl border border-gray-200 p-5">
           <h3 className="text-sm font-semibold text-gray-700 mb-4">
-            {post.commentCount ?? comments.length} Comments
+            {(post.commentCount ?? comments.length) === 1 ? '1 Comment' : `${post.commentCount ?? comments.length} Comments`}
           </h3>
 
           <form onSubmit={handleSubmit} className="flex gap-2 mb-5">

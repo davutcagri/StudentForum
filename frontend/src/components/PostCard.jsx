@@ -5,7 +5,7 @@ import { getAvatarColor, getInitials } from '../utils/avatar'
 import { getCategoryColor } from '../constants/categories'
 import { useAuthStore } from '../store/authStore'
 import { deletePostApi } from '../api/post'
-import { saveCommentApi, getCommentsByPostIdApi, deleteCommentApi } from '../api/comment'
+import { createCommentApi, getCommentsByPostIdApi, deleteCommentApi } from '../api/comment'
 import { extractApiError } from '../utils/apiError'
 
 function CommentSection({ postId, onCountChange }) {
@@ -33,7 +33,7 @@ function CommentSection({ postId, onCountChange }) {
     setError('')
     setSubmitting(true)
     try {
-      await saveCommentApi(commentText.trim(), postId)
+      await createCommentApi(commentText.trim(), postId)
       setCommentText('')
       const res = await getCommentsByPostIdApi(postId, 0, 3)
       setComments(res.data.content ?? [])
@@ -116,7 +116,7 @@ function CommentSection({ postId, onCountChange }) {
 }
 
 export function PostCard({ post, onDelete }) {
-  const { author, timeAgo, category, title, content, commentCount = 0 } = post
+  const { author, category, title, content, commentCount = 0 } = post
   const currentUsername = useAuthStore(s => s.username)
   const navigate = useNavigate()
   const [liked, setLiked] = useState(false)
@@ -149,7 +149,6 @@ export function PostCard({ post, onDelete }) {
           </div>
           <div>
             <span className="text-sm font-semibold text-gray-900">{author?.username}</span>
-            {timeAgo && <span className="text-xs text-gray-400 ml-2">{timeAgo}</span>}
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
@@ -191,7 +190,7 @@ export function PostCard({ post, onDelete }) {
           className={`flex items-center gap-1 transition-colors ${showComments ? 'text-primary font-semibold' : 'hover:text-gray-700'}`}
         >
           <MessageSquare size={13} />
-          <span>{localCommentCount} comments</span>
+          <span>{localCommentCount} {localCommentCount === 1 ? 'comment' : 'comments'}</span>
         </button>
         <button className="ml-auto hover:text-primary transition-colors font-medium">Share</button>
       </div>

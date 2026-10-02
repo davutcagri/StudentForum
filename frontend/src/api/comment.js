@@ -1,6 +1,6 @@
 import client from './client'
 
-export const saveCommentApi = (content, postId) =>
+export const createCommentApi = (content, postId) =>
   client.post('/api/comment/save', { content, postId })
 
 export const getCommentsByPostIdApi = (postId, page = 0, size = 10) =>

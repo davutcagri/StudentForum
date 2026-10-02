@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthStore } from './store/authStore'
-import { getMeApi } from './api/auth'
+import { getMeApi } from './api/user'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Home from './pages/Home'
