@@ -7,7 +7,10 @@ export const getAllPostsApi = (page = 0, size = 10) =>
   client.get('/api/post/getAll', { params: { page, size } })
 
 export const getPostsByUsernameApi = (username, page = 0, size = 10) =>
-  client.get(`/api/post/getAll/${username}`, { params: { page, size } })
+  client.get(`/api/post/getAll/user/${username}`, { params: { page, size } })
+
+export const getPostsByCategoryApi = (categoryId, page = 0, size = 10) =>
+  client.get(`/api/post/getAll/category/${categoryId}`, { params: { page, size } })
 
 export const getPostByIdApi = (id) =>
   client.get(`/api/post/get/${id}`)

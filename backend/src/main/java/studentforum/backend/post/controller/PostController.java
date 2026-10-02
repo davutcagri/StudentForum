@@ -52,9 +52,15 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(postService.getById(id));
     }
 
-    @GetMapping("/getAll/{username}")
+    @GetMapping("/getAll/user/{username}")
     @Operation(summary = "Get all posts by username")
     public ResponseEntity<Page<PostDetails>> getAllPostsByUsername(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable, @PathVariable String username) {
         return ResponseEntity.status(HttpStatus.OK).body(postService.getAllPostsByUsername(pageable, username));
+    }
+
+    @GetMapping("/getAll/category/{categoryId}")
+    @Operation(summary = "Get all posts by category id")
+    public ResponseEntity<Page<PostDetails>> getAllPostsByCategoryId(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable, @PathVariable String categoryId) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.getAllPostsByCategoryId(pageable, categoryId));
     }
 }

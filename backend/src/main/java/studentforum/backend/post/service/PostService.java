@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import studentforum.backend.category.exception.NoCategoryFoundException;
+import studentforum.backend.category.model.Category;
 import studentforum.backend.category.repository.CategoryRepository;
 import studentforum.backend.post.dto.request.PostCreate;
 import studentforum.backend.post.dto.reponse.PostDetails;
@@ -13,6 +14,8 @@ import studentforum.backend.post.exception.NoPostFoundException;
 import studentforum.backend.post.model.Post;
 import studentforum.backend.post.repository.PostRepository;
 import studentforum.backend.user.model.User;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -55,5 +58,11 @@ public class PostService {
     @Transactional(readOnly = true)
     public Page<PostDetails> getAllPostsByUsername(Pageable pageable, String username) {
         return postRepository.findAllByAuthorUsername(username, pageable).map(PostDetails::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostDetails> getAllPostsByCategoryId(Pageable pageable, String categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new NoCategoryFoundException("Category not found"));
+        return postRepository.findAllByCategory(category, pageable).map(PostDetails::new);
     }
 }

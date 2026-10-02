@@ -19,7 +19,7 @@ export function CategorySidebar({ selected, onSelect }) {
           return (
             <li key={cat.id}>
               <button
-                onClick={() => onSelect(cat.name)}
+                onClick={() => onSelect(cat)}
                 className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors text-left ${
                   isSelected
                     ? 'bg-primary text-white font-medium'

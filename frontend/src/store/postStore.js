@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { getAllPostsApi } from '../api/post'
+import { getAllPostsApi, getPostsByCategoryApi } from '../api/post'
 
 export const usePostStore = create((set, get) => ({
   posts: [],
@@ -7,10 +7,15 @@ export const usePostStore = create((set, get) => ({
   hasMore: false,
   loading: true,
   loadingMore: false,
-  load: async (pageNum = 0, append = false) => {
+  activeCategoryId: null,
+  load: async (pageNum = 0, append = false, categoryId = undefined) => {
+    const active = append ? get().activeCategoryId : (categoryId ?? null)
     if (append) set({ loadingMore: true })
+    else set({ loading: true, activeCategoryId: active })
     try {
-      const res = await getAllPostsApi(pageNum)
+      const res = active
+        ? await getPostsByCategoryApi(active, pageNum)
+        : await getAllPostsApi(pageNum)
       const { content, number, totalPages } = res.data
       set(s => ({
         posts: append ? [...s.posts, ...content] : content,
@@ -18,9 +23,7 @@ export const usePostStore = create((set, get) => ({
         hasMore: number < totalPages - 1,
       }))
     } catch {}
-    finally {
-      set({ loading: false, loadingMore: false })
-    }
+    finally { set({ loading: false, loadingMore: false }) }
   },
   removePost: (id) => set(s => ({ posts: s.posts.filter(p => p.id !== id) })),
 }))

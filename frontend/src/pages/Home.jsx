@@ -7,31 +7,36 @@ import { UserSidebar } from '../components/UserSidebar'
 import { usePostStore } from '../store/postStore'
 
 export default function Home() {
-  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [selectedCategory, setSelectedCategory] = useState({ id: 'all', name: 'All' })
   const { posts, page, hasMore, loading, loadingMore, load, removePost } = usePostStore()
 
-  useEffect(() => { load(0) }, [])
+  useEffect(() => { load(0, false, null) }, [])
 
-  const filteredPosts = selectedCategory === 'All'
-    ? posts
-    : posts.filter(p => p.category === selectedCategory)
+  const handleCategorySelect = (cat) => {
+    setSelectedCategory(cat)
+    load(0, false, cat.id === 'all' ? null : cat.id)
+  }
+
+  const handleNewPost = () => {
+    load(0, false, selectedCategory.id === 'all' ? null : selectedCategory.id)
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-6 flex gap-6">
-        <CategorySidebar selected={selectedCategory} onSelect={setSelectedCategory} />
+        <CategorySidebar selected={selectedCategory.name} onSelect={handleCategorySelect} />
         <main className="flex-1 min-w-0 space-y-4">
-          <PostForm onPost={() => load(0)} />
+          <PostForm onPost={handleNewPost} />
           {loading ? (
             <div className="text-center py-10 text-gray-400 text-sm">Loading posts...</div>
-          ) : filteredPosts.length === 0 ? (
+          ) : posts.length === 0 ? (
             <div className="text-center py-16 text-gray-400 text-sm">
               No posts yet. Be the first to share!
             </div>
           ) : (
             <>
-              {filteredPosts.map(post => (
+              {posts.map(post => (
                 <PostCard
                   key={post.id}
                   post={post}
